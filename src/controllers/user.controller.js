@@ -6,7 +6,7 @@ import { validateEmail, validateName, validatePassword } from '../utils/validati
 
 export const signup = async (req, res) => {
     try {
-        const { email, password, username, birthday, gender } = req.body
+        const { email, password, username, birthdate, gender } = req.body
 
         if (!validateEmail(email)) return res.status(400).json({ message: 'Invalid email' })
         if (!validateName(username)) return res.status(400).json({ message: 'Invalid username' })
@@ -36,7 +36,7 @@ export const signup = async (req, res) => {
             email,
             password: await encryptPassword(password),
             username,
-            birthday,
+            birthdate: new Date(birthdate),
             gender
         })
 
