@@ -2,10 +2,15 @@ import { User } from '../models/User.js'
 import { SECRET } from "../config.js";
 import { comparePassword, encryptPassword } from '../utils/encrypt.js'
 import jwt from 'jsonwebtoken'
+import { validateEmail, validateName, validatePassword } from '../utils/validation.js'
 
 export const signup = async (req, res) => {
     try {
         const { email, password, username, birthday, gender } = req.body
+
+        if (!validateEmail(email)) return res.status(400).json({ message: 'Invalid email' })
+        if (!validateName(username)) return res.status(400).json({ message: 'Invalid username' })
+        if (!validatePassword(password)) return res.status(400).json({ message: 'Invalid password' })
 
         const userFound = await User.findOne({
             where: {
